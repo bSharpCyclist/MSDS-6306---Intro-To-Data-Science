@@ -8,7 +8,7 @@ output:
   pdf_document: default
 ---
 
-```{r setup, include=TRUE}
+```{r setup, include=TRUE, message=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
 ```
@@ -101,14 +101,15 @@ Navigate on GitHub to https://github.com/rudeboybert/fivethirtyeight and read RE
 a. Install the fivethirtyeight package.
 
 ```{r}
-# This was done using RStudio GUI interface. It can also be done via the command line using install.packages
+# This was done using RStudio GUI interface. It can also be done via the command line
+# using install.packages
 library(fivethirtyeight)
 ```
 
 b. In the listing of Data sets in package ‘fivethirtyeight,’ assign the 22nd data set to an
 object ‘df.’
 
-The readme file on Github suggests using data(package = "fivethirtyeight") to see a list of all datasets.
+The ReadMe file on Github suggests using data(package = "fivethirtyeight") to see a list of all datasets.
 
 ```{r}
 the538sets <- data(package = "fivethirtyeight")
@@ -158,7 +159,7 @@ ncol(df)
 
 b. Generate a count of each unique major_category in the data frame. I recommend using libraries to help. To be clear, this should look like a matrix or data frame containing the major_category and the frequency it occurs in the dataset. Assign it to major_count.
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 library(dplyr)
 major_count <- tally(group_by(df,major_category))
 major_count
@@ -185,6 +186,19 @@ write.csv(df, file = "recent_college_grads.csv", row.names = FALSE)
 ```
 
 ### Question 6 - Data Summary
+
+a. Start a new repository on GitHub for your SMU MSDS homework. On your local device, make sure there is a directory for Homework at the minimum; you are welcome to add whatever you would like to this repo in addition to your requirements here.
+
+b. Create a README.md file which explains the purpose of the repository, the topics included, the sources for the material you post, and contact information in case of questions. Remember, the one in the root directory should be general. You are welcome to make short READMEs for each assignment individually in other folders.
+
+c. In one (or more) of the nested directories, post your RMarkdown script, HTML file, and data from ‘fivethirtyeight.’ Make sure that in your README or elsewhere that you credit fivethirtyeight in some way.
+
+d. In your RMarkdown script, please provide the link to this GitHub so the grader can see it.
+
+```{r}
+## https://github.com/bSharpCyclist/MSDS-6306---Intro-To-Data-Science.git
+```
+
 
 
 

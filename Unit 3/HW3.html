@@ -384,11 +384,6 @@ $(document).ready(function () {
 
 <pre class="r"><code>knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)</code></pre>
-<pre><code>## Registered S3 methods overwritten by 'ggplot2':
-##   method         from 
-##   [.quosures     rlang
-##   c.quosures     rlang
-##   print.quosures rlang</code></pre>
 <div id="question-1---github-cloning" class="section level3">
 <h3>Question 1 - GitHub Cloning</h3>
 <p>Using Git, clone the following GitHub repository to your local machine: <a href="https://github.com/caesar0301/awesome-public-datasets" class="uri">https://github.com/caesar0301/awesome-public-datasets</a>. In RMarkdown, please show the code (commented out, as it’s not R syntax) that you used to create a new directory, navigate to the appropriate directory, and clone the repository to it. One Git command per line, please.</p>
@@ -465,12 +460,13 @@ sleepDataReport(sleepData)</code></pre>
 <ol style="list-style-type: lower-alpha">
 <li>Install the fivethirtyeight package.</li>
 </ol>
-<pre class="r"><code># This was done using RStudio GUI interface. It can also be done via the command line using install.packages
+<pre class="r"><code># This was done using RStudio GUI interface. It can also be done via the command line
+# using install.packages
 library(fivethirtyeight)</code></pre>
 <ol start="2" style="list-style-type: lower-alpha">
 <li>In the listing of Data sets in package ‘fivethirtyeight,’ assign the 22nd data set to an object ‘df.’</li>
 </ol>
-<p>The readme file on Github suggests using data(package = “fivethirtyeight”) to see a list of all datasets.</p>
+<p>The ReadMe file on Github suggests using data(package = “fivethirtyeight”) to see a list of all datasets.</p>
 <pre class="r"><code>the538sets &lt;- data(package = &quot;fivethirtyeight&quot;)</code></pre>
 <p>If you view the sets, you’ll see it’s a list of length 4 and the 3rd element labeled ‘results’ is a matrix. Then use the head command to take a peak at the structure of that matrix. The ‘Item’ column provides the dataset name that can be referenced when the libray is loaded. For this problem, we are interested in the 22nd entry.</p>
 <pre class="r"><code>names(the538sets)</code></pre>
@@ -552,16 +548,8 @@ library(fivethirtyeight)</code></pre>
 <ol start="2" style="list-style-type: lower-alpha">
 <li>Generate a count of each unique major_category in the data frame. I recommend using libraries to help. To be clear, this should look like a matrix or data frame containing the major_category and the frequency it occurs in the dataset. Assign it to major_count.</li>
 </ol>
-<pre class="r"><code>library(dplyr)</code></pre>
-<pre><code>## 
-## Attaching package: 'dplyr'</code></pre>
-<pre><code>## The following objects are masked from 'package:stats':
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>major_count &lt;- tally(group_by(df,major_category))
+<pre class="r"><code>library(dplyr)
+major_count &lt;- tally(group_by(df,major_category))
 major_count</code></pre>
 <pre><code>## # A tibble: 16 x 2
 ##    major_category                          n
@@ -601,6 +589,13 @@ major_count</code></pre>
 </div>
 <div id="question-6---data-summary" class="section level3">
 <h3>Question 6 - Data Summary</h3>
+<ol style="list-style-type: lower-alpha">
+<li><p>Start a new repository on GitHub for your SMU MSDS homework. On your local device, make sure there is a directory for Homework at the minimum; you are welcome to add whatever you would like to this repo in addition to your requirements here.</p></li>
+<li><p>Create a README.md file which explains the purpose of the repository, the topics included, the sources for the material you post, and contact information in case of questions. Remember, the one in the root directory should be general. You are welcome to make short READMEs for each assignment individually in other folders.</p></li>
+<li><p>In one (or more) of the nested directories, post your RMarkdown script, HTML file, and data from ‘fivethirtyeight.’ Make sure that in your README or elsewhere that you credit fivethirtyeight in some way.</p></li>
+<li><p>In your RMarkdown script, please provide the link to this GitHub so the grader can see it.</p></li>
+</ol>
+<pre class="r"><code>## https://github.com/bSharpCyclist/MSDS-6306---Intro-To-Data-Science.git</code></pre>
 </div>
 
 
