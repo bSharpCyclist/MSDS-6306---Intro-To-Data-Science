@@ -1,0 +1,117 @@
+---
+title: "HW04 - DS6306-402"
+author: "Dan Crouthamel"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document: default
+  keep_md: yes
+  pdf_document: default
+---
+
+```{r setup, include=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+pagebreak <- function() {
+  if(knitr::is_latex_output())
+    return("\\newpage")
+  else
+    return('<div style="page-break-before: always;" />')
+}
+```
+
+## Problem 1 - Harry Potter Cast
+
+In the IMDB, there are listings of full cast members for movies. Navigate to http://www.imdb.com/title/tt1201607/fullcredits?ref_=tt_ql_1. Feel free to View Source to get a good idea of what the page looks like in code.
+
+Scrape the page with any R package that makes things easy for you. Of particular interest is the table of the Cast in order of crediting. Please scrape this table (you might have to fish it out of several of the tables from the page) and make it a data.frame() of the Cast in your R environment
+
+```{r HarryPotter, fig.align='center'}
+# Read info
+library('rvest')
+library('tidyr')
+url <- 'https://www.imdb.com/title/tt1201607/fullcredits?ref_=tt_ql_1'
+site <- read_html(url)
+
+# If you use the browser dev tools, you'll see there is a table with class of cast_list
+# I foudn the following to helpful with selectors -> http://flukeout.github.io/
+node <- html_node(site, "table.cast_list")
+table <- html_table(node, header = FALSE)
+
+# Use View(table) to see results. We see the first row is empty, so nuke it
+table <- table[-1, ]
+
+# The first and third columns column don't look useful, so get rid of them
+table$X1 <- NULL
+table$X3 <- NULL
+
+# Give more meaningful names to the other columns
+names(table) <- c("Actor", "Character")
+
+# There appear to be rows that say "Rest of cast" ... get rid of them
+table <- table[-(table$Actor=="Rest of cast listed alphabetically:"),]
+
+# Fix Warwick as per instructions
+table[table$Actor=="Warwick Davis",][2]="Griphook / Professor Filius Flitwick"
+
+# Split first column into First and Last. Middle name should be included in First.
+# https://regex101.com, very useful for testing, learning
+# This is basically finding the last space separator in name, and telling the 
+# separate function to split/separate on that.
+table <- table %>% separate(Actor, c("FirstName", "Surname"), 
+                            "[ ](?=[^ ]+$)", extra="merge")
+
+# Show first 10 rows
+head(table, 10)
+```
+
+`r pagebreak()`
+## Problem 2 - ESPN
+On the ESPN website, there are statistics of each NBA player. Navigate to the San Antonio Spurs current statistics (likely http://www.espn.com/nba/team/stats/_/name/sa/san-antonio-spurs). You are interested in the Shooting Statistics table.
+
+Scrape the page with any R package that makes things easy for you. There are a few tables on the page, so make sure you are targeting specifically the Shooting Statistics table.
+
+```{r ESPN, fig.align='center'}
+# Read info
+library('rvest')
+library('tidyr')
+url <- 'http://www.espn.com/nba/team/stats/_/name/sa/san-antonio-spurs'
+site <- read_html(url)
+
+# There were a couple of different ways I could have done this.
+# I decided on grabbing all tables, looking at them and then
+# figuring out which ones to use.
+# Names = Table 6, Stats = Table 8
+tables <- html_nodes(site,"table")
+playerTable <- tables[6]
+playerStats <- tables[8]
+
+# Create data frames, include headers, use View(mainTable), make sure it looks good
+playerTable <- as.data.frame(html_table(playerTable, header = TRUE))
+playerStats <- as.data.frame(html_table(playerStats, header = TRUE))
+#mainTable <- as.data.frame(c(playerTable,playerStats), header = TRUE)
+mainTable <- cbind(playerTable,playerStats)
+
+# Delete Totals row, which is the last row
+mainTable <- mainTable[1:(nrow(mainTable)-1),]
+
+# Split name column into Name and Position
+mainTable <- mainTable %>% separate(Name, c("Name", "Position"),
+                                    "[ ](?=[^ ]+$)", extra="merge")
+
+# Assignment asks that appropriate columns are numeric, but they already are!
+str(mainTable)
+
+# Color BarChart
+library(ggplot2)
+fgppgPlot <-ggplot(data=mainTable, aes_string("Name", "`FG.`", fill = "Position"))
+fgppgPlot +
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  ylab("Field Goal Percentage") +
+  xlab("Player") +
+  ggtitle("San Antonio Shooting Percentage per Game 2018-19") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+
